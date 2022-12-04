@@ -3,6 +3,7 @@ import logging
 import pytest
 import requests
 
+from config import TEST_DATA_NAMES
 from main import get_users_full_name_list
 from main import url
 
@@ -37,6 +38,22 @@ def test_users_id(ids, names):
 def test_users_id_bad_values(values):
     logger.info(f'check {values} for []')
     assert get_users_full_name_list(values) == []
+
+
+@pytest.mark.parametrize(
+    'ids, names', [((-4, -1), []),
+               ((-2, 13), TEST_DATA_NAMES),
+               ((14, 19), [])]
+)
+def test_out_of_range(ids, names):
+    logger.info(f'check if {ids} mathes {names}')
+    assert get_users_full_name_list(*ids) == names
+
+
+def test_names_are_sorted():
+    names_list = get_users_full_name_list(1, 12)
+    assert [x[0] for x in names_list] == \
+           sorted([x[0] for x in names_list])
 
 
 def test_total_twelve(full_list, total_amount):

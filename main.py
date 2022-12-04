@@ -36,6 +36,3 @@ def get_users_full_name_list(*args):
         if id_from <= user['id'] <= id_to:
             selected_users.append(user)
     return sorted(full_name(x) for x in selected_users)
-
-
-print(get_users_full_name_list(0, 0))
